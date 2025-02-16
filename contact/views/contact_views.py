@@ -29,8 +29,6 @@ def search(request):
     if search_value == '':
         return redirect('contact:index')
 
-    print(search_value)
-
     contacts = Contact.objects.filter(show=True).filter( # pylint: disable=no-member
         Q(first_name__icontains=search_value) |
         Q(last_name__icontains=search_value) |
@@ -41,6 +39,7 @@ def search(request):
     context = {
         'contacts': contacts,
         'title': 'Search',
+        'search_value': search_value,
     }
 
     return render(
