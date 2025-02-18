@@ -1,6 +1,6 @@
 """Contact Form"""
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from contact.forms import ContactForm
 
 
@@ -13,10 +13,15 @@ def create(request):
     title = 'Form'
 
     if request.method == 'POST':
+        form = ContactForm(data=request.POST)
         context = {
             'title': title,
-            'form': ContactForm(data=request.POST)
+            'form': form
         }
+
+        if form.is_valid():
+            form.save()
+            return redirect('contact:create')
 
         return render(
             request=request,
